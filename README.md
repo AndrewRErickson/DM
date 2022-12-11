@@ -1,1 +1,3 @@
-# DM
+# DM - Deformable Mirror
+
+Directory Contains: 
