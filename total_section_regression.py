@@ -73,13 +73,13 @@ def regress(actu):
     
     
     
-#    ax.plot_wireframe(xx,yy,z0[nx:mx,ny:my],rstride=20, cstride=20, label ='data', color = 'black')
+    ax.plot_wireframe(xx,yy,z0[nx:mx,ny:my],rstride=20, cstride=20, label ='data', color = 'black')
     ax.set_xlim(0,500)
     ax.set_ylim(0,500)
     ax.set_zlim(0,3000)
 
     ax.plot_wireframe(xx, yy, z2, rstride=20, cstride=20,label = 'model',color = 'red')
-    ax.scatter(y0,x0,z0[x0,y0], color = 'green')
+    ax.scatter(x0,y0,z0[x0,y0], color = 'green')
     #ax.text(x0,y0,z0[x0,y0], str(x0)+","+str(y0))
 
     model_max = np.asarray(np.unravel_index(z2.argmax(), z2.shape))
