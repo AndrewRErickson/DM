@@ -56,7 +56,7 @@ def regress(actu):
         }
     
     
-    
+    keys = list(neighbors.keys())
     
     
     voltages[actu] = 1.0
@@ -75,13 +75,11 @@ def regress(actu):
     x0 = x0y0[actu][0]
     y0 = x0y0[actu][1]
     v=1.0
-    mx=x0+10
-    nx=x0-10
-    my=y0+10
-    ny=y0-10
+    mx=x0+70
+    nx=x0-70
+    my=y0+70
+    ny=y0-70
     
-    relative_x0 = x0-nx
-    relative_y0=y0-ny
     
     print('x0', x0,'y0',y0,'mx',mx,'nx',nx,'my',my,'ny',ny)
     x = []
@@ -104,6 +102,16 @@ def regress(actu):
         z0 = data[str(actu) + '_' +str(v)][nx:mx,ny:my]
     z0_shape = np.shape(z0)
     z1 =  z0.flatten()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     gmodel = Model(z, independent_vars=['x','y'],nan_policy='omit')
     gmodel.set_param_hint('v',vary=False)
     gmodel.set_param_hint('a',min = 0, max = 3000)
@@ -114,19 +122,38 @@ def regress(actu):
     results = gmodel.fit(z1, y=y, x=x,v=v,a=1000, x0=x0, y0=y0, sx=20,sy=20, 
                          offset = 1500)
     p = results.params.valuesdict()
+    
+    
+    
+    
+    
+    
+    
+    
     z_fit = z(x,y,v,p["a"],p['x0'],p['y0'],p['sx'],p['sy'],p['offset'])
 
     z2 = (np.reshape(z_fit,z0_shape))
     ax.plot_wireframe(xx,yy,z0,rstride=20, cstride=20, 
                       label ='data', color = 'black')
-
     ax.plot_wireframe(xx, yy, z2, rstride=20, cstride=20,label = 'model',
                       color = 'red')
+    
+    for key in keys:
+        x0=x0y0[neighbors[key]][0]
+        y0=x0y0[neighbors[key]][1]
+        ax.scatter(x0,y0,z0[x0-nx,y0-ny], color = 'green')
+    
+    
+    
+    
+    
     
     ax.set_xlim(0,450)
     ax.set_ylim(0,450)
     ax.set_zlim(0,3000)
-    ax.scatter(x0,y0,z0[relative_x0,relative_y0], color = 'green')
+   # ax.scatter(x0,y0,z0[relative_x0,relative_y0], color = 'green')
+    
+    
     
     
     model_max = (np.asarray(np.unravel_index(z2.argmax(), z2.shape)))
@@ -145,5 +172,7 @@ def regress(actu):
 
 ### Run Time
 print("time in seconds: " + str(time.time()-start))
+
+regress(19)
 
     
