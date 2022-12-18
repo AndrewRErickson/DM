@@ -8,16 +8,16 @@ startTime = time.time()
 ### Import Data 
 with open('uncropped_z.pkl', 'rb') as f: 
     data = pickle.load(f)    
-keys = sorted(list(data.keys()))[:-2] # sorts data.dict alphabetically 
+keys = sorted(list(data.keys()),reverse=True) # sorts data.dict alphabetically 
 keys = [s for s in keys if "1.0" in s] # removes all data except for 1.0V
 
 ### Calculate x0y0 Positions
 x0y0_dict = {} # Dictionary to store x0y0 positions
-i=31
+
+### this is the correct order for the data. Dont change
 for key in keys:
-    x0y0_dict[i] =np.flip((np.asarray(np.unravel_index(data[key].argmax(), 
-                    data[key].shape))))
-    i-=1
+    x0y0_dict[key[0]] =(np.asarray(np.unravel_index(data[key].argmax(), 
+                    data[key].shape)))
 
 ### Create plot of x0y0 positions for each actuator
 fig = plt.figure()

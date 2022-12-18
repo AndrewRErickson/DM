@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 start = time.time()
 
 ### Import Data 
-voltages = np.asarray(pd.read_excel('DM_Actuator_Values.xlsx')["FlatProfile"])
+
 with open('uncropped_z.pkl', 'rb') as f: 
     data = pickle.load(f)    
 with open('x0y0.pkl', 'rb') as f: 
@@ -16,45 +16,22 @@ with open('x0y0.pkl', 'rb') as f:
 with open('DM.pkl', 'rb') as f: 
     DM = pickle.load(f)    
     
-keys_list = sorted(list(data.keys()))[:-2] # sorts data.dict alphabetically 
-keys_list.remove("03_faltprofil")
-keys_list.remove("04_0.0V_unwrapped.txt")
+keys_list = sorted(list(data.keys())) # sorts data.dict alphabetically 
 
 x0y0_keys = list(x0y0.keys())
     
     
-this_dict = {}
-
+actuator_map = {}
 for key in keys_list:
-    for position in x0y0_keys:
-        a = x0y0[position][0]
-        b = x0y0[position][1]
-        this_dict[position,str(key)] = data[key][a,b]
-
-        
-        
-        
-        
-        
-        
-        
-        
-that_keys = list(this_dict.keys())        
+    v = np.asarray(pd.read_excel('DM_Actuator_Values.xlsx')["FlatProfile"])
+    
+    v[key[0]]=key[1]
+    
+    actuator_map[key]=((v,data[key]))
 
 
-i=0
-this_list = []
-for key in that_keys:
-   # for i in range(32):
-        if key[0] == 10:
-            z= this_dict[key]
-            this_list.append(z)
-            
-
-plt.plot(this_list)
-
-
-
+with open('actuator_map.pkl', 'wb') as f:
+    pickle.dump(actuator_map, f)
 
 print("time in seconds: " + str(time.time()-start))
 

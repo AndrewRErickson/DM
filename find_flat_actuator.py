@@ -12,9 +12,8 @@ with open('uncropped_z.pkl', 'rb') as f:
     data = pickle.load(f)   
 with open('x0y0.pkl', 'rb') as f: 
     x0y0 = pickle.load(f)    
-keys = sorted(list(data.keys()))[:-2] # sorts data.dict alphabetically 
-keys.remove("03_faltprofil")
-keys.remove("04_0.0V_unwrapped.txt")
+keys = sorted(list(data.keys())) # sorts data.dict alphabetically 
+
 
 ### Compute z values at every x0y0 for every file in data
 act_dict = {}

@@ -45,11 +45,7 @@ def regress(actu):
 
     def z(x,y,v,a,x0,y0,sx,sy,offset):    
         return a*v*np.exp(-(((x-x0)**2)/(sx**2))-(((y-y0)**2)/(sy**2)))+offset
-    if actu < 10:
-
-        z0 = data["0"+str(actu) + '_' +str(v)][nx:mx,ny:my]
-    else:
-        z0 = data[str(actu) + '_' +str(v)][nx:mx,ny:my]
+    z0 = data[(actu,v)][nx:mx,ny:my]
     z0_shape = np.shape(z0)
     z1 =  z0.flatten()
     gmodel = Model(z, independent_vars=['x','y'],nan_policy='omit')
